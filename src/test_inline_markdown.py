@@ -24,5 +24,19 @@ class TestInlineMarkdown(unittest.TestCase):
             new_nodes,
         )
 
+    def test_delim_double_bold(self):
+        node = TextNode("This is text with a **bolded** word and **another**", text_type_text)
+        new_nodes = split_nodes_delimiter([node], "**", text_type_bold)
+        self.assertListEqual(
+            [
+                TextNode("This is text with a ", text_type_text),
+                TextNode("bolded", text_type_bold),
+                TextNode(" word and ", text_type_text),
+                TextNode("another", text_type_bold),
+            ],
+            new_nodes,
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
