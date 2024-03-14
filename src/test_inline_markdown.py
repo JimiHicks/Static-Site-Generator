@@ -3,6 +3,8 @@ from inline_markdown import (
     split_nodes_delimiter,
     EXTRACT_MARKDOWN_IMAGES,
     EXTRACT_MARKDOWN_LINKS,
+    split_image_nodes,
+    split_link_nodes,
 )
 
 from textnode import (
@@ -113,6 +115,10 @@ class TestInlineMarkdown(unittest.TestCase):
         new_node = EXTRACT_MARKDOWN_LINKS(node)
         self.assertEqual = new_node
 
-        
+    def test_split_image(self):
+        node = "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another](https://i.imgur.com/dfsdkjfd.png)"
+        new_node = split_image_nodes(node)
+        self.asserEqual = new_node
+
 if __name__ == "__main__":
     unittest.main()
