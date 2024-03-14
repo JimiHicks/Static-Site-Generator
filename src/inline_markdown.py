@@ -27,3 +27,7 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
                 split_nodes.append(TextNode(sections[i], text_type))
         new_nodes.extend(split_nodes)
     return new_nodes
+
+def EXTRACT_MARKDOWN_IMAGES(TEXT):
+    images = re.findall(r"!\[(.*?)\]\((.*?)\)", TEXT)
+    return images
