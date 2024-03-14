@@ -38,23 +38,23 @@ def EXTRACT_MARKDOWN_LINKS(TEXT):
     return re.findall(r"\[(.*?)\]\((.*?)\)", TEXT)
 
 def split_image_nodes(old_nodes):
-    new_list = []
-    for node in old_nodes:
-        if node.text_type != text_type_text:
-            new_list.append(node)
+    new_nodes = []
+    for old_node in old_nodes:
+        if old_node.text_type != text_type_text:
+            new_nodes.append(old_node)
             continue
-        original_text = node.text
+        original_text = old_node.text
         images = EXTRACT_MARKDOWN_IMAGES(original_text)
         if len(images) == 0:
-            new_list.append(node)
+            new_nodes.append(old_node)
             continue
         for image in images:
-            sections = original_text.text.split(f"![{image[0]}]({image[1]})", 1)
+            sections = original_text.split(f"![{image[0]}]({image[1]})", 1)
             if len(sections) != 2:
-                raise ValueError("Invalid Markdown, image section not closed")
+                raise ValueError("Invalid markdown, image section not closed")
             if sections[0] != "":
-                new_list.append(TextNode(sections[0], text_type_text))
-            new_list.append(
+                new_nodes.append(TextNode(sections[0], text_type_text))
+            new_nodes.append(
                 TextNode(
                     image[0],
                     text_type_image,
@@ -63,32 +63,28 @@ def split_image_nodes(old_nodes):
             )
             original_text = sections[1]
         if original_text != "":
-            new_list.append(TextNode(original_text, text_type_text))   
-    return new_list
+            new_nodes.append(TextNode(original_text, text_type_text))
+    return new_nodes
 
 def split_link_nodes(old_nodes):
-    new_list = []
-    for node in old_nodes:
-        if node.text_type != text_type_text:
-            new_list.append(node)
+    new_nodes = []
+    for old_node in old_nodes:
+        if old_node.text_type != text_type_text:
+            new_nodes.append(old_node)
             continue
-        original_text = node.text
+        original_text = old_node.text
         links = EXTRACT_MARKDOWN_LINKS(original_text)
         if len(links) == 0:
-            new_list.append(node)
+            new_nodes.append(old_node)
             continue
         for link in links:
-            sections = original_text.text.split(f"![{link[0]}]({link[1]})", 1)
+            sections = original_text.split(f"[{link[0]}]({link[1]})", 1)
             if len(sections) != 2:
-                raise ValueError("Invalid Markdown, image section not closed")
+                raise ValueError("Invalid markdown, link section not closed")
             if sections[0] != "":
-                new_list.append(TextNode(sections[0], text_type_text))
-            new_list.append(
-                link[0],
-                text_type_image,
-                link[1],
-            )
+                new_nodes.append(TextNode(sections[0], text_type_text))
+            new_nodes.append(TextNode(link[0], text_type_link, link[1]))
             original_text = sections[1]
         if original_text != "":
-            new_list.append(TextNode(original_text, text_type_text))   
-    return new_list
+            new_nodes.append(TextNode(original_text, text_type_text))
+    return new_nodes
