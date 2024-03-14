@@ -120,5 +120,10 @@ class TestInlineMarkdown(unittest.TestCase):
         new_node = split_image_nodes(node)
         self.asserEqual = new_node
 
+    def test_split_link(self):
+        node = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
+        new_node = split_link_nodes(node)
+        self.asserEqual = new_node
+
 if __name__ == "__main__":
     unittest.main()
