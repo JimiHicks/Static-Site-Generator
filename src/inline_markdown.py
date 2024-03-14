@@ -31,3 +31,6 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
 def EXTRACT_MARKDOWN_IMAGES(TEXT):
     images = re.findall(r"!\[(.*?)\]\((.*?)\)", TEXT)
     return images
+
+def EXTRACT_MARKDOWN_LINKS(TEXT):
+    return re.findall(r"\[(.*?)\]\((.*?)\)", TEXT)
