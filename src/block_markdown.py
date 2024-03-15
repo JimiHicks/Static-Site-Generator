@@ -22,8 +22,8 @@ def markdown_to_blocks(markdown):
     return filtered_blocks
 
 
-def markdown_to_html_node(markdwon):
-    blocks = markdown_to_blocks(markdwon)
+def markdown_to_html_node(markdown):
+    blocks = markdown_to_blocks(markdown)
     children = []
     for block in blocks:
         html_node = block_to_html_node(block)
@@ -89,7 +89,7 @@ def text_to_children(text):
     text_nodes = text_to_textnodes(text)
     children = []
     for text_node in text_nodes:
-        html_node = text_to_children(text_node)
+        html_node = text_node_to_html(text_node)
         children.append(html_node)
     return children
 
@@ -127,16 +127,16 @@ def olist_to_html_node(block):
         text = item[3:]
         children = text_to_children(text)
         html_items.append(ParentNode("li", children))
-    return ParentNode("li", html_items)
+    return ParentNode("ol", html_items)
 
 def ulist_to_html_node(block):
     items = block.split("\n")
     html_items = []
     for item in items:
         text = item[2:]
-        children = text_to_textnodes(text)
+        children = text_to_children(text)
         html_items.append(ParentNode("li", children))
-    return ParentNode("li", html_items)                     
+    return ParentNode("ul", html_items)                     
 
 def quote_to_html_node(block):
     lines = block.split("\n")
