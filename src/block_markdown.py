@@ -67,7 +67,7 @@ def text_to_children(text):
     return children
 
 def paragraph_to_html_node(block):
-    lines = block.split()
+    lines = block.split("\n")
     paragraph = " ".join(lines)
     children = text_to_children(paragraph)
     return ParentNode("p", children)
@@ -84,3 +84,29 @@ def heading_to_html_node(block):
     text = block[level + 1 :]
     children = text_to_children(text)
     return ParentNode(f"h{level}", children)
+
+def code_to_html_node(block):
+    if not block.startswith("```") and not block.endswith("```"):
+        return ValueError("Invalid code block")
+    text = block[4:-3]
+    children = text_to_children(text)
+    code = ParentNode("code", children)
+    return ParentNode("pre", [code])
+
+def olist_to_html_node(block):
+    items = block.split("\n")
+    html_items = []
+    for item in items:
+        text = item[3:]
+        children = text_to_children(text)
+        html_items.append(ParentNode("li", children))
+    return ParentNode("li", html_items)
+
+def ulist_to_html_node(block):
+    items = block.split("\n")
+    html_items = []
+    for item in items:
+        text = item[2:]
+        children = text_to_textnodes(text)
+        html_items.append(ParentNode("li", children))
+    return ParentNode("ul", html_items)
