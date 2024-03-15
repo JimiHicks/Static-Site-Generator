@@ -109,4 +109,15 @@ def ulist_to_html_node(block):
         text = item[2:]
         children = text_to_textnodes(text)
         html_items.append(ParentNode("li", children))
-    return ParentNode("ul", html_items)
+    return ParentNode("li", html_items)                     
+
+def quote_to_html_node(block):
+    lines = block.split("\n")
+    new_lines = []
+    for line in lines:
+        if not line.startswith(">"):
+            raise ValueError("Invalid quote block")
+        new_lines.append(line.lstrip(">").strip())
+    content = " ".join(new_lines)
+    children = text_to_children(content)
+    return ParentNode("blockquote", children)
