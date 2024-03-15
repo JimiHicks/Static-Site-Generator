@@ -1,5 +1,3 @@
-import re
-
 block_type_paragraph = "paragraph"
 block_type_heading = "heading"
 block_type_code = "code"
@@ -49,7 +47,7 @@ def block_to_block_type(markdown):
     if markdown.startswith("1. "):
         i = 1
         for line in lines:
-            if not line.startswith(f"{i} "):
+            if not line.startswith(f"{i}. "):
                 return block_type_paragraph
             i += 1 
         return block_type_ordered_list
